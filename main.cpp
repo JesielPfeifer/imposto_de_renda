@@ -80,6 +80,5 @@ int ImpostoDeRenda::idade(int anoNascimento) {
 int main() {
     ImpostoDeRenda();
     cout << "Digite o nome do contribuinte: ";
-    cin >>
     return 0;
 }
