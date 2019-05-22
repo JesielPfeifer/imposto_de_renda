@@ -9,7 +9,7 @@ class ImpostoDeRenda {
 private:
     string nomeDoContribuinte, profissao, escolaridade;
     float rendaMensal, aliquota;
-    int numeroDependentes, anoNascimento;
+    int numeroDependentes, anoNascimento, idade;
 
 public:
     ImpostoDeRenda();
@@ -20,22 +20,22 @@ public:
 
     ~ImpostoDeRenda();
 
-    int idade(int anoNascimento);
+//    int idade();
 
-    float rendaAnual(float rendaMensal);
+    float rendaAnual();
 
-    float rendaPerCapitaMensal(float rendaMensal, int numeroDependentes);
+    float rendaPerCapitaMensal();
 
-    float aliquotaIrMax(float aliquota);
+    float aliquotaIrMax();
 
-    float aliquotaIrEf(float aliquota);
+    float aliquotaIrEf();
 
-    float valorIr(float rendaAnual);
+    float valorIr();
 
-    void imprimir(string nomeDoContribuinte, string profissao, string escolaridade, int idade);
+    void imprimir();
 
-    void cadastro(string nomeDoContribuinte, string profissao, string escolaridade, float rendaMensal,
-                  float aliquota, int numeroDepedentes, int anoNascimento);
+    int voltaIdade(int aN);
+
 };
 
 ImpostoDeRenda::ImpostoDeRenda() {
@@ -49,9 +49,9 @@ ImpostoDeRenda::ImpostoDeRenda() {
     anoNascimento = 0;
 }
 
-/*ImpostoDeRenda::ImpostoDeRenda(string nomeDoContribuinte_, string profissao_, string escolaridade_, float rendaMensal_,
-                               float aliquota_, int numeroDependentes_, int anoNascimento_)
-{
+ImpostoDeRenda::ImpostoDeRenda(string nomeDoContribuinte_, string profissao_, string escolaridade_, float rendaMensal_,
+                               float aliquota_, int numeroDependentes_, int anoNascimento_) {
+
     nomeDoContribuinte = nomeDoContribuinte_;
     profissao = profissao_;
     escolaridade = escolaridade_;
@@ -59,45 +59,36 @@ ImpostoDeRenda::ImpostoDeRenda() {
     aliquota = aliquota_;
     numeroDependentes = numeroDependentes_;
     anoNascimento = anoNascimento_;
-}*/
+    idade = voltaIdade(anoNascimento);
+}
+
+ImpostoDeRenda::voltaIdade(int aN) {
+    return 2019-aN;
+}
 
 ImpostoDeRenda::~ImpostoDeRenda() {
 }
 
-void ImpostoDeRenda::cadastro(string nomeDoContribuinte_, string profissao_, string escolaridade_, float rendaMensal_,
-                              float aliquota_, int numeroDepedentes_, int anoNascimento_) {
-    nomeDoContribuinte = nomeDoContribuinte_;
-    profissao = profissao_;
-    escolaridade = escolaridade_;
-    rendaMensal = rendaMensal_;
-    aliquota = aliquota_;
-    numeroDependentes = numeroDepedentes_;
-    anoNascimento = anoNascimento_;
-}
 
-int ImpostoDeRenda::idade(int anoNascimento) {
-    int idade;
-    if (anoNascimento <= 2019) {
-        idade = 2019 - anoNascimento;
-        cout << "Idade: " << idade << endl;
-    } else {
-        cout << "Idade invalida" << endl;
-    }
-    return idade;
-}
+//int ImpostoDeRenda::idade() {
+//    int idade;
+//    if (anoNascimento <= 2019) {
+//        idade = 2019 - anoNascimento;
+//    }
+//    return idade;
+//}
 
-float ImpostoDeRenda::rendaAnual(float rendaMensal) {
-    float rendaAnual = rendaMensal * 12;
-    cout << "Renda anual: " << rendaAnual << endl;
-    this->valorIr(rendaAnual);
+float ImpostoDeRenda::rendaAnual() {
+    float rendaAnual = this->rendaMensal * 12;
     return rendaAnual;
 }
 
-float ImpostoDeRenda::rendaPerCapitaMensal(float rendaMensal, int numeroDependentesDigitado) {
-    float rendaPCM = rendaMensal / (numeroDependentesDigitado + 1);
+float ImpostoDeRenda::rendaPerCapitaMensal() {
+    float rendaPCM = this->rendaMensal / (this->numeroDependentes + 1);
     cout << "Renda Per Capita Mensal: " << rendaPCM << endl;
     return rendaPCM;
 }
+
 /*
 float ImpostoDeRenda::aliquotaIrMax(float RendaMensalPerCapita){
 }
@@ -106,31 +97,31 @@ float ImpostoDeRenda::aliquotaIrEf(float aliquota){
 }
 */
 
-float ImpostoDeRenda::valorIr(float rendaAnual){
-    cout << "TESTE TESTE: " << rendaAnual << endl;
+float ImpostoDeRenda::valorIr() {
+
 }
 
-/*
-void ImpostoDeRenda::cadastro(string nomeDoContribuinte, string profissao, string escolaridade, float rendaMensal,
-                              float aliquota, int numeroDepedentes, int anoNascimento){
+void ImpostoDeRenda::imprimir() {
+
+    imprimir(this->nomeDoContribuinte);
+    //cout << rendaAnual();
 }
-*/
+void ImpostoDeRenda::imprimir(string nome) {
 
-
-void ImpostoDeRenda::imprimir(string nomeDoContribuinte, string profissao, string escolaridade, int ano) {
-
-    cout << "Nome: " << nomeDoContribuinte << endl;
-    cout << "Ano de nascimento: " << ano << endl;
-    cout << "Profissao: " << profissao << endl;
-    cout << "Escolaridade: " << escolaridade << endl;
-
+    cout << "Nome: " << this->nomeDoContribuinte << endl;
+    cout << "Ano de nascimento: " << this->anoNascimento << endl;
+    cout << "Profissao: " << this->profissao << endl;
+    cout << "Escolaridade: " << this->escolaridade << endl;
+    cout << "Idade: " << this->idade << endl;
+    //cout << rendaAnual();
 }
 
 int main() {
     string _nome, _escolaridade, _profissao;
+
     int _ano, numerosDependentes;
-    float RendaMensal;
-    ImpostoDeRenda *Dados = new ImpostoDeRenda();
+
+    float RendaMensal, aliquota = 0.0;
 
     cout << "Digite o nome do contribuinte: ";
     cin >> _nome;
@@ -156,10 +147,13 @@ int main() {
     cin >> numerosDependentes;
     cout << endl;
 
-    Dados->imprimir(_nome, _escolaridade, _profissao, _ano);
-    Dados->idade(_ano);
-    Dados->rendaAnual(RendaMensal);
-    Dados->rendaPerCapitaMensal(RendaMensal, numerosDependentes);
+    ImpostoDeRenda *dados = new ImpostoDeRenda(_nome, _profissao, _escolaridade, RendaMensal, aliquota,
+                                               numerosDependentes, _ano);
+
+    dados->imprimir(_nome);
+//    dados->idade();
+    dados->rendaAnual();
+    dados->rendaPerCapitaMensal();
 
     cout << endl;
 
